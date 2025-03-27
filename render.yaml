@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: revoe-table-fetch-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        sync: false 
