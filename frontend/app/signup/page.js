@@ -41,6 +41,7 @@ export default function Signup() {
 
     try {
       setIsLoading(true)
+      console.log('Attempting to sign up with API URL:', process.env.NEXT_PUBLIC_API_URL)
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
@@ -51,8 +52,11 @@ export default function Signup() {
         body: JSON.stringify({ name, email, password }),
       })
 
+      console.log('Signup response status:', response.status)
+      const data = await response.json()
+      console.log('Signup response data:', data)
+
       if (response.ok) {
-        const data = await response.json()
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
         toast({
@@ -61,11 +65,14 @@ export default function Signup() {
         })
         router.push('/')
       } else {
-        const error = await response.json()
-        throw new Error(error.message || 'Failed to create account')
+        throw new Error(data.message || 'Failed to create account')
       }
     } catch (error) {
-      console.error('Signup error:', error)
+      console.error('Signup error details:', {
+        message: error.message,
+        stack: error.stack,
+        apiUrl: process.env.NEXT_PUBLIC_API_URL
+      })
       toast({
         title: "Error",
         description: error.message || "Failed to create account",

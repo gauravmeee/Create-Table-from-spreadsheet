@@ -19,6 +19,7 @@ export default function Login() {
     e.preventDefault()
     try {
       setIsLoading(true)
+      console.log('Attempting to login with API URL:', process.env.NEXT_PUBLIC_API_URL)
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
@@ -29,8 +30,11 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       })
 
+      console.log('Login response status:', response.status)
+      const data = await response.json()
+      console.log('Login response data:', data)
+
       if (response.ok) {
-        const data = await response.json()
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
         router.push('/')
@@ -39,13 +43,17 @@ export default function Login() {
           description: "Logged in successfully",
         })
       } else {
-        throw new Error('Invalid credentials')
+        throw new Error(data.message || 'Invalid credentials')
       }
     } catch (error) {
-      console.error('Login error:', error)
+      console.error('Login error details:', {
+        message: error.message,
+        stack: error.stack,
+        apiUrl: process.env.NEXT_PUBLIC_API_URL
+      })
       toast({
         title: "Error",
-        description: "Invalid email or password",
+        description: error.message || "Invalid email or password",
         variant: "destructive",
       })
     } finally {
