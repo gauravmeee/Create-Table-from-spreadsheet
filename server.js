@@ -18,7 +18,13 @@ const io = socketIo(server, {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    process.env.FRONTEND_URL || "http://localhost:3000",
+    "https://create-table-from-spreadsheet-2fgsut569-gauravmeees-projects.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Database connection
