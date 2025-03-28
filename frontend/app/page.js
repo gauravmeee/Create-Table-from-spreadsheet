@@ -156,8 +156,17 @@ export default function Home() {
       } else if (response.status === 401) {
         handleLogout()
       } else {
-        const error = await response.json()
-        throw new Error(error.message || 'Failed to delete table')
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type')
+        if (contentType && contentType.includes('application/json')) {
+          const error = await response.json()
+          throw new Error(error.message || 'Failed to delete table')
+        } else {
+          // Handle non-JSON response
+          const text = await response.text()
+          console.error('Server response:', text)
+          throw new Error('Server error occurred while deleting table')
+        }
       }
     } catch (error) {
       console.error('Error deleting table:', error)
