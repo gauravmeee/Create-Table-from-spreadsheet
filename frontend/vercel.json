@@ -7,6 +7,6 @@
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://revoe-table-fetch.onrender.com"
+    "NEXT_PUBLIC_API_URL": "https://create-table-from-spreadsheet.onrender.com"
   }
 } 

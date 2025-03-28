@@ -41,8 +41,9 @@ export default function Signup() {
 
     try {
       setIsLoading(true)
-      console.log('Attempting to sign up with API URL:', process.env.NEXT_PUBLIC_API_URL)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
+      const apiUrl = 'https://create-table-from-spreadsheet.onrender.com'
+      console.log('Attempting to sign up with API URL:', apiUrl)
+      const response = await fetch(`${apiUrl}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +72,7 @@ export default function Signup() {
       console.error('Signup error details:', {
         message: error.message,
         stack: error.stack,
-        apiUrl: process.env.NEXT_PUBLIC_API_URL
+        apiUrl: 'https://create-table-from-spreadsheet.onrender.com'
       })
       toast({
         title: "Error",

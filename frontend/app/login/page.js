@@ -19,8 +19,9 @@ export default function Login() {
     e.preventDefault()
     try {
       setIsLoading(true)
-      console.log('Attempting to login with API URL:', process.env.NEXT_PUBLIC_API_URL)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+      const apiUrl = 'https://create-table-from-spreadsheet.onrender.com'
+      console.log('Attempting to login with API URL:', apiUrl)
+      const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ export default function Login() {
       console.error('Login error details:', {
         message: error.message,
         stack: error.stack,
-        apiUrl: process.env.NEXT_PUBLIC_API_URL
+        apiUrl: 'https://create-table-from-spreadsheet.onrender.com'
       })
       toast({
         title: "Error",
