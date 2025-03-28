@@ -6,20 +6,29 @@ const path = require('path');
 
 // Initialize Google Sheets API
 const sheets = google.sheets('v4');
+
+// Create credentials object from environment variables
+const credentials = {
+  type: 'service_account',
+  project_id: process.env.GOOGLE_PROJECT_ID || 'revoeai-dashboard-assignment',
+  private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID || 'da97e66c8e00aa460463ead81a8f7c1de7dd9a1c',
+  private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  client_email: process.env.GOOGLE_CLIENT_EMAIL || 'sheet-access@revoeai-dashboard-assignment.iam.gserviceaccount.com',
+  client_id: process.env.GOOGLE_CLIENT_ID || '116684013413592560497',
+  auth_uri: 'https://accounts.google.com/o/oauth2/auth',
+  token_uri: 'https://oauth2.googleapis.com/token',
+  auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
+  client_x509_cert_url: process.env.GOOGLE_CLIENT_CERT_URL || 'https://www.googleapis.com/robot/v1/metadata/x509/sheet-access%40revoeai-dashboard-assignment.iam.gserviceaccount.com',
+  universe_domain: 'googleapis.com'
+};
+
+// Validate required credentials
+if (!credentials.private_key) {
+  console.error('GOOGLE_PRIVATE_KEY environment variable is not set');
+}
+
 const auth = new google.auth.GoogleAuth({
-  credentials: {
-    type: 'service_account',
-    project_id: 'revoeai-dashboard-assignment',
-    private_key_id: 'da97e66c8e00aa460463ead81a8f7c1de7dd9a1c',
-    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    client_email: 'sheet-access@revoeai-dashboard-assignment.iam.gserviceaccount.com',
-    client_id: '116684013413592560497',
-    auth_uri: 'https://accounts.google.com/o/oauth2/auth',
-    token_uri: 'https://oauth2.googleapis.com/token',
-    auth_provider_x509_cert_url: 'https://www.googleapis.com/oauth2/v1/certs',
-    client_x509_cert_url: 'https://www.googleapis.com/robot/v1/metadata/x509/sheet-access%40revoeai-dashboard-assignment.iam.gserviceaccount.com',
-    universe_domain: 'googleapis.com'
-  },
+  credentials,
   scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
 });
 
