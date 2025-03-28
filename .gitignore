@@ -6,7 +6,4 @@ node_modules/
 
 # Ignore all .env files
 *.env
-"credentials/" 
-"credentials/" 
-"credentials/" 
 credentials/ 
