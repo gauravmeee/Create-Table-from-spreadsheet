@@ -136,11 +136,15 @@ export default function Home() {
 
   const handleDeleteTable = async (tableId) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tables/${tableId}`, {
+      const apiUrl = 'https://create-table-from-spreadsheet.onrender.com'
+      const response = await fetch(`${apiUrl}/api/tables/${tableId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -149,6 +153,8 @@ export default function Home() {
           title: "Success",
           description: "Table deleted successfully",
         })
+      } else if (response.status === 401) {
+        handleLogout()
       } else {
         const error = await response.json()
         throw new Error(error.message || 'Failed to delete table')
