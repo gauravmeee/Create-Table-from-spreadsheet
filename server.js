@@ -19,14 +19,10 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || "http://localhost:3000",
-    "https://create-table-from-spreadsheet.vercel.app",
-    "https://create-table-from-spreadsheet-2fgsut569-gauravmeees-projects.vercel.app"
-  ],
+  origin: true, // Allow all origins during development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
 }));
 app.use(express.json());
 
