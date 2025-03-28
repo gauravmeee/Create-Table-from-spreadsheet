@@ -33,10 +33,14 @@ export default function Home() {
 
   const fetchTables = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tables`, {
+      const apiUrl = 'https://create-table-from-spreadsheet.onrender.com'
+      const response = await fetch(`${apiUrl}/api/tables`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'include'
       })
       if (response.ok) {
         const data = await response.json()
@@ -90,16 +94,19 @@ export default function Home() {
         return
       }
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tables`, {
+      const apiUrl = 'https://create-table-from-spreadsheet.onrender.com'
+      const response = await fetch(`${apiUrl}/api/tables`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Accept': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           name: newTableName.trim(),
           googleSheetUrl: googleSheetUrl.trim()
-        }),
+        })
       })
 
       if (response.ok) {
